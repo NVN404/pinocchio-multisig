@@ -37,13 +37,13 @@ pub fn process_update_threshold_instruction(
 
     let update_threshold_data = load_ix_data::<UpdateThreshold>(data)?;
 
-    if multisig_config_account.min_threshold == update_threshold_data.min_threshold {
-        return Err(ProgramError::InvalidInstructionData); // Or a more specific custom error
-    }
-
     // Load the MultisigConfig account to modify it
     let mut multisig_config_account =
         MultisigConfig::from_account_info(&multisig_config_account_info)?;
+
+    if multisig_config_account.min_threshold == update_threshold_data.min_threshold {
+        return Err(ProgramError::InvalidInstructionData); // Or a more specific custom error
+    }
 
     // Update the min_threshold
     multisig_config_account.min_threshold = update_threshold_data.min_threshold;
